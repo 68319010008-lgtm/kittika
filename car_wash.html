@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>จองล้างสว่างเทคนิค | Sawang Tech Car Wash</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Prompt', 'Noto Sans SC', sans-serif;
+      background-color: #020917;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(0, 153, 255, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 85% 35%, rgba(0, 114, 255, 0.14) 0%, transparent 50%),
+        linear-gradient(180deg, #04132b 0%, #020a1a 55%, #010610 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* เอฟเฟกต์ปุ่มเรืองแสงสีฟ้าตามต้นฉบับ */
+    .cyber-btn {
+      background: linear-gradient(180deg, #1aa3ff 0%, #0066ff 100%);
+      box-shadow: 0 0 18px rgba(0, 162, 255, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(125, 211, 252, 0.6);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .cyber-btn:hover {
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.95), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+      transform: translateY(-2px);
+    }
+    .cyber-btn:active {
+      transform: translateY(0);
+    }
+
+    /* การ์ดกระจกขอบฟ้าเรืองแสง */
+    .cyber-card {
+      background: linear-gradient(145deg, rgba(8, 28, 62, 0.82) 0%, rgba(4, 16, 38, 0.92) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), inset 0 0 15px rgba(14, 165, 233, 0.08);
+      transition: all 0.3s ease;
+    }
+    .cyber-card:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 12px 35px rgba(0, 162, 255, 0.28), inset 0 0 20px rgba(56, 189, 248, 0.15);
+      transform: translateY(-3px);
+    }
+
+    /* หัวข้อไล่เฉดสีขาว-ฟ้า */
+    .hero-title-gradient {
+      background: linear-gradient(90deg, #ffffff 0%, #e0f2fe 45%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 16px rgba(0, 162, 255, 0.45));
+    }
+
+    /* ริบบิ้นโปรโมชั่นสีแดง */
+    .promo-ribbon {
+      background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+      box-shadow: 0 4px 15px rgba(220, 38, 38, 0.6);
+    }
+
+    /* ป้ายมงกุฎโค้งเรืองแสง */
+    .crown-badge {
+      background: radial-gradient(ellipse at center, rgba(12, 74, 110, 0.95) 0%, rgba(3, 21, 48, 0.95) 100%);
+      border: 2px solid #38bdf8;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.65), inset 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+
+    /* แอนิเมชันละอองน้ำเบาๆ */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-float {
+      animation: floatSlow 3.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-sky-500 selection:text-white">
+
+  <!-- ==================== TOAST NOTIFICATION (แทน alert) ==================== -->
+  <div id="toastBox" class="fixed bottom-5 right-5 z-[100] hidden max-w-sm w-full">
+    <div class="cyber-card border-sky-400 rounded-2xl p-4 flex items-center gap-3 shadow-2xl">
+      <div id="toastIcon" class="w-10 h-10 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg shrink-0">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div class="flex-1">
+        <div id="toastTitle" class="font-bold text-sm text-white">แจ้งเตือน</div>
+        <div id="toastMsg" class="text-xs text-sky-200 mt-0.5">ดำเนินการสำเร็จ</div>
+      </div>
+      <button onclick="hideToast()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="sticky top-0 z-50 bg-[#030e21]/90 backdrop-blur-md border-b border-sky-500/25 shadow-[0_4px_25px_rgba(0,0,0,0.6)]">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- โลโก้ร้าน -->
+      <a href="#" onclick="switchView('home'); return false;" class="flex items-center gap-3 group">
+        <div class="relative w-12 h-11 flex items-center justify-center">
+          <!-- ไอคอนรถเรืองแสง SVG -->
+          <svg viewBox="0 0 120 70" class="w-12 h-11 drop-shadow-[0_0_10px_rgba(56,189,248,0.85)] group-hover:scale-105 transition">
+            <path d="M12,45 Q30,15 65,16 Q90,17 108,38 L112,46 Q95,48 88,46 A12,12 0 1,0 64,46 L42,46 A12,12 0 1,0 18,46 Z" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+            <path d="M32,27 Q55,18 82,27" fill="none" stroke="#bae6fd" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="30" cy="48" r="7" fill="#0284c7" stroke="#e0f2fe" stroke-width="2.5"/>
+            <circle cx="76" cy="48" r="7" fill="#0284c7" stroke="#e0f2fe" stroke-width="2.5"/>
+            <path d="M6,34 Q18,28 24,35 M8,41 Q16,38 20,42" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div data-i18n="brandName" class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">จองล้างสว่างเทคนิค</div>
+          <div class="text-[10px] sm:text-[11px] font-bold tracking-[0.18em] text-sky-400 uppercase">SAWANG TECH CAR WASH</div>
+        </div>
+      </a>
+
+      <!-- เมนูหลัก -->
+      <nav class="hidden lg:flex items-center gap-1.5 text-sm font-medium">
+        <button onclick="switchView('home')" id="nav-home" class="nav-pill px-4 py-2 rounded-full cyber-btn text-white font-semibold flex items-center gap-1.5">
+          <i class="fa-solid fa-house"></i> <span data-i18n="navHome">หน้าแรก</span>
+        </button>
+        <a href="#services-section" onclick="switchView('home')" class="px-3.5 py-2 rounded-full text-slate-200 hover:text-sky-300 hover:bg-sky-500/10 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-car text-sky-400"></i> <span data-i18n="navServices">บริการ</span>
+        </a>
+        <a href="#promo-section" onclick="switchView('home')" class="px-3.5 py-2 rounded-full text-slate-200 hover:text-sky-300 hover:bg-sky-500/10 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-clock text-sky-400"></i> <span data-i18n="navPromo">โปรโมชั่น</span>
+        </a>
+        <button onclick="openBookingModal()" class="px-3.5 py-2 rounded-full text-slate-200 hover:text-sky-300 hover:bg-sky-500/10 transition flex items-center gap-1.5">
+          <i class="fa-regular fa-calendar-check text-sky-400"></i> <span data-i18n="navBooking">จองคิว</span>
+        </button>
+        <button onclick="switchView('check')" id="nav-check" class="px-3.5 py-2 rounded-full text-slate-200 hover:text-sky-300 hover:bg-sky-500/10 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-magnifying-glass text-sky-400"></i> <span data-i18n="navCheck">ตรวจสอบคิว</span>
+        </button>
+        <a href="#contact-section" onclick="switchView('home')" class="px-3.5 py-2 rounded-full text-slate-200 hover:text-sky-300 hover:bg-sky-500/10 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-headset text-sky-400"></i> <span data-i18n="navContact">ติดต่อเรา</span>
+        </a>
+      </nav>
+
+      <!-- ตัวสลับ 3 ภาษา + ปุ่มแอดมิน -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Switcher (TH / EN / ZH) -->
+        <div class="flex items-center bg-[#061836] border border-sky-500/40 rounded-full p-1 text-xs font-bold shadow-inner" role="group" aria-label="Language Switcher">
+          <button onclick="setLanguage('th')" id="lang-th" class="lang-btn px-2.5 py-1 rounded-full transition">TH</button>
+          <button onclick="setLanguage('en')" id="lang-en" class="lang-btn px-2.5 py-1 rounded-full transition">EN</button>
+          <button onclick="setLanguage('zh')" id="lang-zh" class="lang-btn px-2.5 py-1 rounded-full transition">中文</button>
+        </div>
+
+        <!-- ปุ่มเข้าสู่ระบบ / จัดการแอดมิน -->
+        <button onclick="handleAdminButton()" id="adminHeaderBtn" class="cyber-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-user"></i>
+          <span id="adminHeaderText" data-i18n="navLogin">เข้าสู่ระบบ</span>
+        </button>
+
+        <!-- ปุ่มเมนูมือถือ -->
+        <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl bg-sky-500/15 border border-sky-400/30 text-sky-300">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- เมนูสำหรับหน้าจอมือถือ -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-[#041229] border-t border-sky-500/20 px-4 py-3 space-y-2 text-sm">
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="switchView('home'); toggleMobileMenu()" class="p-2.5 rounded-xl bg-sky-500/15 text-left font-semibold text-sky-300">
+          <i class="fa-solid fa-house mr-2"></i><span data-i18n="navHome">หน้าแรก</span>
+        </button>
+        <button onclick="openBookingModal(); toggleMobileMenu()" class="p-2.5 rounded-xl bg-sky-500/15 text-left font-semibold text-sky-300">
+          <i class="fa-regular fa-calendar-check mr-2"></i><span data-i18n="navBooking">จองคิว</span>
+        </button>
+        <button onclick="switchView('check'); toggleMobileMenu()" class="p-2.5 rounded-xl bg-sky-500/15 text-left font-semibold text-sky-300">
+          <i class="fa-solid fa-magnifying-glass mr-2"></i><span data-i18n="navCheck">ตรวจสอบคิว</span>
+        </button>
+        <a href="#services-section" onclick="switchView('home'); toggleMobileMenu()" class="p-2.5 rounded-xl bg-sky-500/15 text-left font-semibold text-sky-300">
+          <i class="fa-solid fa-car mr-2"></i><span data-i18n="navServices">บริการ</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== VIEW 1: HOME PAGE ==================== -->
+  <main id="view-home">
+    
+    <!-- HERO BANNER (ตามแบบภาพตัวอย่าง) -->
+    <section class="relative overflow-hidden border-b-2 border-sky-400/40 shadow-[0_10px_40px_rgba(0,140,255,0.2)]">
+      <!-- ภาพพื้นหลังอู่ล้างรถโทนน้ำเงิน -->
+      <div class="absolute inset-0 bg-cover bg-center scale-105" style="background-image: url('https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&w=1800&q=80');"></div>
+      <!-- เลเยอร์ไล่สีน้ำเงินเข้มเรืองแสง -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#020c1f] via-[#04193b]/90 to-[#031430]/55"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(14,165,233,0.25),transparent_60%)]"></div>
+
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 lg:py-20 grid lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- ฝั่งซ้าย: ข้อความหลักและปุ่มจองคิว -->
+        <div class="lg:col-span-6 space-y-4 z-10">
+          <div class="flex items-center gap-2 text-sky-300 font-bold text-sm sm:text-base tracking-wide">
+            <span class="text-sky-400 font-black text-lg">//</span>
+            <span data-i18n="heroTagline">“ดูแลรถคุณ...ให้สะอาดเหนือระดับ”</span>
+            <span class="text-sky-400 font-black text-lg">//</span>
+          </div>
+
+          <h1 data-i18n="heroTitle" class="text-4xl sm:text-5xl xl:text-6xl font-black tracking-tight hero-title-gradient leading-[1.15]">
+            จองล้างสว่างเทคนิค
+          </h1>
+
+          <p data-i18n="heroSubtitle" class="text-base sm:text-xl text-slate-100 font-normal leading-relaxed max-w-xl">
+            บริการล้างรถคุณภาพ จองคิวออนไลน์ง่าย ๆ ไม่ต้องรอนาน
+          </p>
+
+          <div class="pt-2 pb-1">
+            <button onclick="openBookingModal()" class="cyber-btn px-7 sm:px-9 py-3.5 sm:py-4 rounded-full text-base sm:text-xl font-extrabold text-white inline-flex items-center gap-3">
+              <i class="fa-regular fa-calendar-check text-xl"></i>
+              <span data-i18n="heroCta">จองคิวล้างรถเลย</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- จุดเด่น 3 ข้อใต้ปุ่ม -->
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 text-xs sm:text-sm font-medium text-sky-100">
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-sky-400 text-[#020c1f] flex items-center justify-center text-[11px] font-bold"><i class="fa-solid fa-check"></i></span>
+              <span data-i18n="heroPerk1">บริการรวดเร็ว</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-sky-400 text-[#020c1f] flex items-center justify-center text-[11px] font-bold"><i class="fa-solid fa-check"></i></span>
+              <span data-i18n="heroPerk2">ราคาชัดเจน</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-sky-400 text-[#020c1f] flex items-center justify-center text-[11px] font-bold"><i class="fa-solid fa-check"></i></span>
+              <span data-i18n="heroPerk3">ดูแลด้วยใจ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ฝั่งขวา: ภาพรถหรูฉีดโฟม + ป้ายมงกุฎเรืองแสง -->
+        <div class="lg:col-span-6 relative flex justify-center items-center">
+          <div class="relative w-full max-w-xl rounded-3xl overflow-hidden border-2 border-sky-400/60 shadow-[0_0_50px_rgba(0,162,255,0.45)]">
+            <img src="https://images.unsplash.com/photo-1552930294-6b595f4c2974?auto=format&fit=crop&w=1000&q=85" alt="Sawang Tech Car Wash" class="w-full h-64 sm:h-80 object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#020b1c]/80 via-transparent to-sky-500/10"></div>
+          </div>
+
+          <!-- ป้ายมงกุฎมุมขวาล่างตามต้นฉบับ -->
+          <div class="animate-float absolute -bottom-4 right-1 sm:right-3 crown-badge px-5 py-2.5 rounded-full text-center">
+            <div class="text-amber-400 text-base -mt-5 mb-0.5 drop-shadow-[0_2px_6px_rgba(251,191,36,0.8)]">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <div data-i18n="badgeTitle" class="text-sm sm:text-base font-extrabold text-white leading-tight">สะอาด เงางาม</div>
+            <div data-i18n="badgeSub" class="text-[11px] sm:text-xs font-medium text-sky-300">ในทุกการเดินทาง</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== SERVICES SECTION (บริการของเรา 4 การ์ด) ==================== -->
+    <section id="services-section" class="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-8">
+      <div class="flex items-center justify-center gap-3 mb-7">
+        <div class="h-[1px] w-12 sm:w-24 bg-gradient-to-r from-transparent to-sky-400"></div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2.5 tracking-wide">
+          <i class="fa-solid fa-car text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]"></i>
+          <span data-i18n="servicesHeading">บริการของเรา</span>
+        </h2>
+        <div class="h-[1px] w-12 sm:w-24 bg-gradient-to-l from-transparent to-sky-400"></div>
+      </div>
+
+      <!-- Grid การ์ดบริการ (โหลดจาก State อัตโนมัติ) -->
+      <div id="servicesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Render via JS -->
+      </div>
+    </section>
+
+    <!-- ==================== PROMOTION & 4 HIGHLIGHTS ==================== -->
+    <section id="promo-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <div class="grid lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- การ์ดซ้าย: โปรโมชั่นพิเศษ! -->
+        <div class="lg:col-span-7 cyber-card rounded-2xl relative overflow-hidden border-sky-400/60 flex flex-col justify-center">
+          <!-- ป้ายริบบิ้นสีแดงมุมซ้ายบน -->
+          <div class="promo-ribbon absolute top-0 left-0 px-5 py-1.5 rounded-br-2xl text-white font-extrabold text-xs sm:text-sm tracking-wide z-10">
+            <span data-i18n="promoRibbon">โปรโมชั่นพิเศษ!</span>
+          </div>
+
+          <div class="p-5 sm:p-6 pt-10 sm:pt-8 grid sm:grid-cols-12 gap-4 items-center">
+            <div class="sm:col-span-6 space-y-2 z-10">
+              <h3 data-i18n="promoTitle" class="text-xl sm:text-2xl font-extrabold text-white">ล้างรถ + ดูดฝุ่น</h3>
+              <div class="flex items-baseline gap-2">
+                <span data-i18n="promoOnly" class="text-lg sm:text-xl font-bold text-red-400">เพียง</span>
+                <span class="text-4xl sm:text-5xl font-black text-red-500 drop-shadow-[0_2px_10px_rgba(239,68,68,0.6)]">150</span>
+                <span data-i18n="currency" class="text-lg sm:text-xl font-bold text-red-400">บาท</span>
+              </div>
+              <p data-i18n="promoDesc" class="text-xs sm:text-sm text-sky-200 font-medium">
+                “สะอาดครบ คุ้มสุด ๆ ที่จองล้างสว่างเทคนิค”
+              </p>
+              <div class="pt-2">
+                <button onclick="openBookingModal(2)" class="cyber-btn px-5 py-2 rounded-full text-xs sm:text-sm font-bold text-white inline-flex items-center gap-2">
+                  <span data-i18n="bookNow">จองเลย</span> <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="sm:col-span-6">
+              <div class="relative rounded-xl overflow-hidden border border-sky-400/40 shadow-lg">
+                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=700&q=80" alt="Promo White Sedan" class="w-full h-40 sm:h-44 object-cover">
+                <div class="absolute inset-0 bg-gradient-to-tr from-[#041530]/60 via-transparent to-sky-400/20"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- การ์ดขวา: จุดเด่น 4 ด้าน -->
+        <div class="lg:col-span-5 cyber-card rounded-2xl p-5 sm:p-6 flex items-center">
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-4 w-full">
+            <div class="flex flex-col items-center text-center p-3 rounded-xl bg-[#051838]/80 border border-sky-500/25 hover:border-sky-400 transition">
+              <div class="w-12 h-12 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl mb-2 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div data-i18n="feat1" class="text-xs sm:text-sm font-bold text-white">มาตรฐานคุณภาพ</div>
+            </div>
+
+            <div class="flex flex-col items-center text-center p-3 rounded-xl bg-[#051838]/80 border border-sky-500/25 hover:border-sky-400 transition">
+              <div class="w-12 h-12 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl mb-2 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <div data-i18n="feat2" class="text-xs sm:text-sm font-bold text-white">รวดเร็วทันใจ</div>
+            </div>
+
+            <div class="flex flex-col items-center text-center p-3 rounded-xl bg-[#051838]/80 border border-sky-500/25 hover:border-sky-400 transition">
+              <div class="w-12 h-12 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl mb-2 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+                <i class="fa-solid fa-thumbs-up"></i>
+              </div>
+              <div data-i18n="feat3" class="text-xs sm:text-sm font-bold text-white">ราคายุติธรรม</div>
+            </div>
+
+            <div class="flex flex-col items-center text-center p-3 rounded-xl bg-[#051838]/80 border border-sky-500/25 hover:border-sky-400 transition">
+              <div class="w-12 h-12 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl mb-2 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+                <i class="fa-solid fa-headset"></i>
+              </div>
+              <div data-i18n="feat4" class="text-xs sm:text-sm font-bold text-white">บริการด้วยรอยยิ้ม</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== WHY CHOOSE US & FOOTER ==================== -->
+    <section id="contact-section" class="mt-8 border-t border-sky-500/30 bg-gradient-to-b from-[#04142e] to-[#010712]">
+      <div class="max-w-5xl mx-auto px-4 pt-6 pb-12 text-center space-y-6">
+        <!-- แถบหัวข้อโค้งด้านบนเหมือนในภาพ -->
+        <div class="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-[#072047] border border-sky-400/50 shadow-[0_0_20px_rgba(56,189,248,0.3)]">
+          <i class="fa-solid fa-bullhorn text-sky-400 text-lg"></i>
+          <h2 class="text-lg sm:text-2xl font-extrabold text-white">
+            <span data-i18n="whyPrefix">ทำไมต้อง</span>
+            <span data-i18n="brandName" class="text-sky-400">จองล้างสว่างเทคนิค</span> ?
+          </h2>
+        </div>
+
+        <p data-i18n="whyDesc" class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          เราคัดสรรน้ำยาล้างรถและเคลือบสีเกรดพรีเมียม ปลอดภัยต่อสีรถทุกชนิด พร้อมระบบจองคิวออนไลน์ที่เช็คสถานะได้แบบเรียลไทม์ ไม่ต้องเสียเวลานั่งรอคิวนาน
+        </p>
+
+        <!-- ข้อมูลติดต่อร้าน -->
+        <div class="grid sm:grid-cols-3 gap-4 pt-4 text-left">
+          <div class="cyber-card p-4 rounded-2xl flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg shrink-0">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div>
+              <div data-i18n="contactLocTitle" class="text-xs text-sky-300 font-semibold">สถานที่ให้บริการ</div>
+              <div data-i18n="contactLocVal" class="text-sm font-bold text-white">ศูนย์บริการสว่างเทคนิค คาร์แคร์</div>
+            </div>
+          </div>
+
+          <div class="cyber-card p-4 rounded-2xl flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg shrink-0">
+              <i class="fa-solid fa-phone-volume"></i>
+            </div>
+            <div>
+              <div data-i18n="contactPhoneTitle" class="text-xs text-sky-300 font-semibold">เบอร์โทรติดต่อด่วน</div>
+              <div class="text-sm font-bold text-white">089-999-8888 / Line: @sawangwash</div>
+            </div>
+          </div>
+
+          <div class="cyber-card p-4 rounded-2xl flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg shrink-0">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <div>
+              <div data-i18n="contactTimeTitle" class="text-xs text-sky-300 font-semibold">เวลาเปิดทำการ</div>
+              <div data-i18n="contactTimeVal" class="text-sm font-bold text-white">เปิดทุกวัน 08:00 - 19:00 น.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-800/80 text-xs text-slate-400">
+          © 2026 Sawang Tech Car Wash (จองล้างสว่างเทคนิค). All Rights Reserved.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== VIEW 2: CHECK QUEUE PAGE ==================== -->
+  <section id="view-check" class="hidden max-w-4xl mx-auto px-4 sm:px-6 py-10 min-h-[75vh]">
+    <div class="cyber-card rounded-3xl p-6 sm:p-8 border-sky-400/50">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2.5">
+            <i class="fa-solid fa-magnifying-glass text-sky-400"></i>
+            <span data-i18n="checkHeading">ตรวจสอบสถานะคิวล้างรถ</span>
+          </h2>
+          <p data-i18n="checkSub" class="text-sm text-sky-200 mt-1">
+            กรอกรหัสคิว (เช่น SW-1001), เบอร์โทรศัพท์ หรือเลขทะเบียนรถของคุณ
+          </p>
+        </div>
+        <button onclick="switchView('home')" class="px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-sky-300">
+          <i class="fa-solid fa-arrow-left mr-1"></i> <span data-i18n="backHome">กลับหน้าหลัก</span>
+        </button>
+      </div>
+
+      <!-- ช่องค้นหา -->
+      <div class="flex flex-col sm:flex-row gap-3 mb-6">
+        <input id="queueSearchInput" onkeyup="if(event.key==='Enter') renderQueueCheck()" type="text" data-i18n-placeholder="searchPlaceholder" placeholder="ระบุรหัสคิว / เบอร์โทร / ทะเบียนรถ..." class="flex-1 px-4 py-3.5 rounded-2xl bg-[#030d1f] border border-sky-500/40 text-white placeholder-slate-400 focus:outline-none focus:border-sky-400">
+        <button onclick="renderQueueCheck()" class="cyber-btn px-7 py-3.5 rounded-2xl font-bold text-white flex items-center justify-center gap-2">
+          <i class="fa-solid fa-search"></i> <span data-i18n="searchBtn">ค้นหาคิว</span>
+        </button>
+      </div>
+
+      <!-- แสดงคิวล่าสุดทั้งหมดหรือผลการค้นหา -->
+      <div class="flex items-center justify-between text-xs text-sky-300 mb-3">
+        <span data-i18n="recentQueuesLabel">รายการคิวในระบบล่าสุด (คลิกค้นหาเพื่อกรองเฉพาะรถของคุณ):</span>
+        <button onclick="document.getElementById('queueSearchInput').value=''; renderQueueCheck();" class="underline hover:text-white" data-i18n="showAll">แสดงทั้งหมด</button>
+      </div>
+
+      <div id="queueCheckResults" class="space-y-4">
+        <!-- Render via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW 3: ADMIN DASHBOARD ==================== -->
+  <section id="view-admin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6 min-h-[80vh]">
+    <!-- Header แอดมิน -->
+    <div class="cyber-card rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4 border-sky-400/50">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold mb-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> ADMIN ONLINE
+        </div>
+        <h2 data-i18n="adminTitle" class="text-2xl font-extrabold text-white">ระบบจัดการหลังบ้าน (Admin Dashboard)</h2>
+        <p data-i18n="adminSub" class="text-xs sm:text-sm text-sky-200">จัดการคิวล้างรถ อัปเดตสถานะลูกค้า จัดการบริการ และส่งออกโค้ด Docker</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5">
+        <button onclick="openDockerModal()" class="px-4 py-2.5 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 border border-indigo-400/50 text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+          <i class="fa-brands fa-docker text-base"></i> <span data-i18n="dockerBtn">ไฟล์ติดตั้ง Docker</span>
+        </button>
+        <button onclick="switchView('home')" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-semibold text-sky-300">
+          <i class="fa-solid fa-eye mr-1"></i> <span data-i18n="viewFrontend">ดูหน้าเว็บลูกค้า</span>
+        </button>
+        <button onclick="logoutAdmin()" class="px-4 py-2.5 rounded-xl bg-red-600/85 hover:bg-red-600 text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="logoutBtn">ออกจากระบบ</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- การ์ดสถิติ 4 ช่อง -->
+    <div id="adminStatsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Render via JS -->
+    </div>
+
+    <!-- ตารางจัดการคิวลูกค้า -->
+    <div class="cyber-card rounded-2xl p-5 sm:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-sky-400"></i>
+          <span data-i18n="adminQueueTableTitle">รายการจองคิวลูกค้าทั้งหมด</span>
+        </h3>
+        <div class="flex items-center gap-2">
+          <button onclick="openBookingModal()" class="cyber-btn px-4 py-2 rounded-xl text-xs font-bold text-white">
+            + <span data-i18n="adminAddBooking">เพิ่มคิวหน้าร้าน</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-sky-500/30 text-sky-300 text-xs uppercase">
+              <th class="py-3 px-3" data-i18n="thCode">รหัสคิว</th>
+              <th class="py-3 px-3" data-i18n="thDateTime">วัน / เวลา</th>
+              <th class="py-3 px-3" data-i18n="thCustomer">ลูกค้า / เบอร์โทร</th>
+              <th class="py-3 px-3" data-i18n="thCar">ทะเบียน / รุ่นรถ</th>
+              <th class="py-3 px-3" data-i18n="thService">บริการ / ราคา</th>
+              <th class="py-3 px-3" data-i18n="thStatus">สถานะคิว</th>
+              <th class="py-3 px-3 text-right" data-i18n="thAction">จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="adminBookingsBody" class="divide-y divide-slate-800/80">
+            <!-- Render via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- จัดการแพ็กเกจบริการ (รองรับ 3 ภาษา) -->
+    <div class="cyber-card rounded-2xl p-5 sm:p-6 space-y-5">
+      <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
+        <i class="fa-solid fa-tags text-sky-400"></i>
+        <span data-i18n="adminServiceTitle">จัดการแพ็กเกจบริการ (เพิ่ม / ลบ)</span>
+      </h3>
+
+      <form onsubmit="handleAddService(event)" class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 bg-[#030d1f] p-4 rounded-2xl border border-sky-500/30">
+        <div>
+          <label class="block text-[11px] text-sky-300 mb-1">ชื่อบริการ (ไทย) *</label>
+          <input id="newSrvTh" required type="text" placeholder="เช่น เคลือบแก้วเซรามิก" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-sky-500/30 text-sm text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-sky-300 mb-1">Service Name (EN) *</label>
+          <input id="newSrvEn" required type="text" placeholder="e.g. Ceramic Coating" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-sky-500/30 text-sm text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-sky-300 mb-1">服务名称 (中文) *</label>
+          <input id="newSrvZh" required type="text" placeholder="例如：陶瓷镀晶" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-sky-500/30 text-sm text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-sky-300 mb-1" data-i18n="priceLabel">ราคา (บาท) *</label>
+          <input id="newSrvPrice" required type="number" min="1" placeholder="350" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-sky-500/30 text-sm text-white">
+        </div>
+        <div class="flex flex-col justify-end">
+          <button type="submit" class="cyber-btn w-full py-2.5 rounded-xl font-bold text-sm text-white">
+            + <span data-i18n="addServiceBtn">เพิ่มบริการ</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- รายการบริการปัจจุบัน -->
+      <div id="adminServicesList" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Render via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODAL 1: BOOKING FORM ==================== -->
+  <div id="bookingModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="cyber-card rounded-3xl max-w-lg w-full p-6 sm:p-7 relative border-sky-400 my-auto">
+      <button onclick="closeBookingModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800/80 hover:bg-red-500 text-slate-300 hover:text-white flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-11 h-11 rounded-2xl cyber-btn flex items-center justify-center text-xl">
+          <i class="fa-regular fa-calendar-check"></i>
+        </div>
+        <div>
+          <h3 data-i18n="modalBookTitle" class="text-xl font-extrabold text-white">จองคิวล้างรถออนไลน์</h3>
+          <p data-i18n="modalBookSub" class="text-xs text-sky-300">กรอกข้อมูลด้านล่างเพื่อรับรหัสคิวทันที</p>
+        </div>
+      </div>
+
+      <form onsubmit="submitBookingForm(event)" class="space-y-3.5 text-sm">
+        <div>
+          <label data-i18n="labelSelectService" class="block text-sky-200 font-medium mb-1">เลือกบริการล้างรถ *</label>
+          <select id="bookServiceSelect" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+            <!-- Options via JS -->
+          </select>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label data-i18n="labelName" class="block text-sky-200 font-medium mb-1">ชื่อผู้จอง *</label>
+            <input id="bookName" required type="text" data-i18n-placeholder="phName" placeholder="เช่น คุณสมชาย" class="w-full px-3.5 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+          </div>
+          <div>
+            <label data-i18n="labelPhone" class="block text-sky-200 font-medium mb-1">เบอร์โทรศัพท์ *</label>
+            <input id="bookPhone" required type="tel" placeholder="08X-XXX-XXXX" class="w-full px-3.5 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label data-i18n="labelPlate" class="block text-sky-200 font-medium mb-1">เลขทะเบียนรถ *</label>
+            <input id="bookPlate" required type="text" data-i18n-placeholder="phPlate" placeholder="เช่น กข 1234 กทม" class="w-full px-3.5 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+          </div>
+          <div>
+            <label data-i18n="labelCarModel" class="block text-sky-200 font-medium mb-1">ยี่ห้อ / รุ่นรถ</label>
+            <input id="bookModel" type="text" data-i18n-placeholder="phModel" placeholder="เช่น Honda Civic สีขาว" class="w-full px-3.5 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label data-i18n="labelDate" class="block text-sky-200 font-medium mb-1">วันที่เข้ารับบริการ *</label>
+            <input id="bookDate" required type="date" class="w-full px-3.5 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+          </div>
+          <div>
+            <label data-i18n="labelTime" class="block text-sky-200 font-medium mb-1">ช่วงเวลา *</label>
+            <select id="bookTime" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+              <option value="08:30">08:30</option>
+              <option value="09:30">09:30</option>
+              <option value="10:30" selected>10:30</option>
+              <option value="11:30">11:30</option>
+              <option value="13:00">13:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:00">18:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-3 flex gap-3">
+          <button type="button" onclick="closeBookingModal()" data-i18n="cancelBtn" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-slate-300">
+            ยกเลิก
+          </button>
+          <button type="submit" class="flex-[2] cyber-btn py-3 rounded-xl font-extrabold text-white text-base">
+            <i class="fa-solid fa-check-circle mr-1.5"></i> <span data-i18n="confirmBookBtn">ยืนยันการจองคิว</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: ADMIN LOGIN ==================== -->
+  <div id="loginModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="cyber-card rounded-3xl max-w-md w-full p-6 sm:p-7 relative border-sky-400">
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800 hover:bg-red-500 text-slate-300 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-14 h-14 rounded-2xl cyber-btn mx-auto flex items-center justify-center text-2xl mb-3">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h3 data-i18n="loginTitle" class="text-xl font-extrabold text-white">เข้าสู่ระบบแอดมิน</h3>
+        <p data-i18n="loginSub" class="text-xs text-sky-300 mt-1">สำหรับผู้ดูแลระบบ Sawang Tech Car Wash</p>
+      </div>
+
+      <form onsubmit="submitAdminLogin(event)" class="space-y-4 text-sm">
+        <div>
+          <label data-i18n="usernameLabel" class="block text-sky-200 mb-1">ชื่อผู้ใช้ (Username)</label>
+          <input id="adminUser" required type="text" value="admin" class="w-full px-4 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+        </div>
+        <div>
+          <label data-i18n="passwordLabel" class="block text-sky-200 mb-1">รหัสผ่าน (Password)</label>
+          <input id="adminPass" required type="password" value="1234" class="w-full px-4 py-2.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-white focus:outline-none focus:border-sky-400">
+        </div>
+
+        <div class="p-3 rounded-xl bg-sky-950/60 border border-sky-500/30 text-xs text-sky-200 flex items-center justify-between">
+          <span>Demo: <b>admin</b> / <b>1234</b></span>
+          <button type="button" onclick="quickDemoLogin()" class="px-3 py-1 rounded-lg bg-sky-500/30 hover:bg-sky-500/50 text-sky-200 font-bold">
+            <span data-i18n="quickLoginBtn">เข้าสู่ระบบด่วน</span>
+          </button>
+        </div>
+
+        <button type="submit" class="w-full cyber-btn py-3 rounded-xl font-extrabold text-white text-base">
+          <i class="fa-solid fa-right-to-bracket mr-1.5"></i> <span data-i18n="loginSubmitBtn">เข้าสู่ระบบ</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: DOCKER DEPLOYMENT CODE ==================== -->
+  <div id="dockerModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="cyber-card rounded-3xl max-w-3xl w-full p-6 relative border-sky-400 my-auto">
+      <button onclick="closeDockerModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800 hover:bg-red-500 text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="text-xl font-extrabold text-white flex items-center gap-2 mb-2">
+        <i class="fa-brands fa-docker text-sky-400 text-2xl"></i>
+        <span data-i18n="dockerModalTitle">ชุดคำสั่ง Docker สำหรับรันบน Server / localhost:8080</span>
+      </h3>
+      <p data-i18n="dockerModalSub" class="text-xs text-sky-200 mb-4">
+        คัดลอกไฟล์ด้านล่างไปวางในโฟลเดอร์โปรเจกต์ แล้วรันคำสั่ง <code class="bg-slate-900 px-2 py-0.5 rounded text-amber-300">docker-compose up -d --build</code>
+      </p>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-bold text-sky-300">1. Dockerfile & docker-compose.yml (Port 8080)</span>
+            <button onclick="copyDockerSnippet()" class="px-3 py-1 rounded-lg bg-sky-500/25 hover:bg-sky-500/40 text-sky-200 font-semibold">
+              <i class="fa-regular fa-copy mr-1"></i> <span data-i18n="copyCode">คัดลอกโค้ด</span>
+            </button>
+          </div>
+          <textarea id="dockerCodeBox" readonly rows="12" class="w-full p-3 rounded-xl bg-[#020813] border border-sky-500/30 text-emerald-300 font-mono text-xs focus:outline-none"># --- Dockerfile ---
+FROM node:20-alpine
+WORKDIR /app
+COPY . .
+RUN npm install -g http-server
+EXPOSE 8080
+CMD ["http-server", "-p", "8080"]
+
+# --- docker-compose.yml ---
+version: '3.8'
+services:
+  sawang-carwash:
+    build: .
+    container_name: sawang-tech-carwash
+    ports:
+      - "8080:8080"
+    restart: always</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC & 3-LANGUAGE DICTIONARY ==================== -->
+  <script>
+    // 1. พจนานุกรม 3 ภาษา (ไทย / English / 中文)
+    const i18n = {
+      th: {
+        brandName: "จองล้างสว่างเทคนิค",
+        navHome: "หน้าแรก",
+        navServices: "บริการ",
+        navPromo: "โปรโมชั่น",
+        navBooking: "จองคิว",
+        navCheck: "ตรวจสอบคิว",
+        navContact: "ติดต่อเรา",
+        navLogin: "เข้าสู่ระบบ",
+        navAdminPanel: "ระบบแอดมิน",
+        heroTagline: "“ดูแลรถคุณ...ให้สะอาดเหนือระดับ”",
+        heroTitle: "จองล้างสว่างเทคนิค",
+        heroSubtitle: "บริการล้างรถคุณภาพ จองคิวออนไลน์ง่าย ๆ ไม่ต้องรอนาน",
+        heroCta: "จองคิวล้างรถเลย",
+        heroPerk1: "บริการรวดเร็ว",
+        heroPerk2: "ราคาชัดเจน",
+        heroPerk3: "ดูแลด้วยใจ",
+        badgeTitle: "สะอาด เงางาม",
+        badgeSub: "ในทุกการเดินทาง",
+        servicesHeading: "บริการของเรา",
+        currency: "บาท",
+        bookNow: "จองเลย",
+        promoRibbon: "โปรโมชั่นพิเศษ!",
+        promoTitle: "ล้างรถ + ดูดฝุ่น",
+        promoOnly: "เพียง",
+        promoDesc: "“สะอาดครบ คุ้มสุด ๆ ที่จองล้างสว่างเทคนิค”",
+        feat1: "มาตรฐานคุณภาพ",
+        feat2: "รวดเร็วทันใจ",
+        feat3: "ราคายุติธรรม",
+        feat4: "บริการด้วยรอยยิ้ม",
+        whyPrefix: "ทำไมต้อง",
+        whyDesc: "เราคัดสรรน้ำยาล้างรถและเคลือบสีเกรดพรีเมียม ปลอดภัยต่อสีรถทุกชนิด พร้อมระบบจองคิวออนไลน์ที่เช็คสถานะได้แบบเรียลไทม์ ไม่ต้องเสียเวลานั่งรอคิวนาน",
+        contactLocTitle: "สถานที่ให้บริการ",
+        contactLocVal: "ศูนย์บริการสว่างเทคนิค คาร์แคร์",
+        contactPhoneTitle: "เบอร์โทรติดต่อด่วน",
+        contactTimeTitle: "เวลาเปิดทำการ",
+        contactTimeVal: "เปิดทุกวัน 08:00 - 19:00 น.",
+        checkHeading: "ตรวจสอบสถานะคิวล้างรถ",
+        checkSub: "กรอกรหัสคิว (เช่น SW-1001), เบอร์โทรศัพท์ หรือเลขทะเบียนรถของคุณ",
+        backHome: "กลับหน้าหลัก",
+        searchPlaceholder: "ระบุรหัสคิว / เบอร์โทร / ทะเบียนรถ...",
+        searchBtn: "ค้นหาคิว",
+        recentQueuesLabel: "รายการคิวในระบบล่าสุด (พิมพ์ค้นหาเพื่อกรองเฉพาะรถของคุณ):",
+        showAll: "แสดงทั้งหมด",
+        noQueueFound: "ไม่พบข้อมูลคิวที่ค้นหา กรุณาตรวจสอบรหัสคิวหรือเบอร์โทรอีกครั้ง",
+        modalBookTitle: "จองคิวล้างรถออนไลน์",
+        modalBookSub: "กรอกข้อมูลด้านล่างเพื่อรับรหัสคิวทันที",
+        labelSelectService: "เลือกบริการล้างรถ *",
+        labelName: "ชื่อผู้จอง *",
+        phName: "เช่น คุณสมชาย",
+        labelPhone: "เบอร์โทรศัพท์ *",
+        labelPlate: "เลขทะเบียนรถ *",
+        phPlate: "เช่น กข 1234 กทม",
+        labelCarModel: "ยี่ห้อ / รุ่นรถ",
+        phModel: "เช่น Honda Civic สีขาว",
+        labelDate: "วันที่เข้ารับบริการ *",
+        labelTime: "ช่วงเวลา *",
+        cancelBtn: "ยกเลิก",
+        confirmBookBtn: "ยืนยันการจองคิว",
+        loginTitle: "เข้าสู่ระบบแอดมิน",
+        loginSub: "สำหรับผู้ดูแลระบบ Sawang Tech Car Wash",
+        usernameLabel: "ชื่อผู้ใช้ (Username)",
+        passwordLabel: "รหัสผ่าน (Password)",
+        quickLoginBtn: "เข้าสู่ระบบด่วน",
+        loginSubmitBtn: "เข้าสู่ระบบ",
+        adminTitle: "ระบบจัดการหลังบ้าน (Admin Dashboard)",
+        adminSub: "จัดการคิวล้างรถ อัปเดตสถานะลูกค้า จัดการบริการ และส่งออกโค้ด Docker",
+        dockerBtn: "ไฟล์ติดตั้ง Docker",
+        viewFrontend: "ดูหน้าเว็บลูกค้า",
+        logoutBtn: "ออกจากระบบ",
+        statTotal: "คิวทั้งหมด",
+        statWaiting: "รอคิวล้าง",
+        statWashing: "กำลังล้างรถ",
+        statRevenue: "รายได้รวม (บาท)",
+        adminQueueTableTitle: "รายการจองคิวลูกค้าทั้งหมด",
+        adminAddBooking: "เพิ่มคิวหน้าร้าน",
+        thCode: "รหัสคิว",
+        thDateTime: "วัน / เวลา",
+        thCustomer: "ลูกค้า / เบอร์โทร",
+        thCar: "ทะเบียน / รุ่นรถ",
+        thService: "บริการ / ราคา",
+        thStatus: "สถานะคิว",
+        thAction: "จัดการ",
+        adminServiceTitle: "จัดการแพ็กเกจบริการ (เพิ่ม / ลบ)",
+        priceLabel: "ราคา (บาท) *",
+        addServiceBtn: "เพิ่มบริการ",
+        statusWaiting: "รอคิว",
+        statusWashing: "กำลังล้าง",
+        statusDone: "เสร็จสิ้น",
+        statusCancel: "ยกเลิก",
+        toastBookedTitle: "จองคิวสำเร็จ!",
+        toastBookedMsg: "รหัสคิวของคุณคือ",
+        toastLoginOk: "เข้าสู่ระบบแอดมินสำเร็จ",
+        toastLoginFail: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+        toastStatusUpdated: "อัปเดตสถานะคิวเรียบร้อยแล้ว",
+        toastDeleted: "ลบข้อมูลเรียบร้อยแล้ว",
+        toastServiceAdded: "เพิ่มแพ็กเกจบริการใหม่แล้ว",
+        dockerModalTitle: "ชุดคำสั่ง Docker สำหรับรันบน Server / localhost:8080",
+        dockerModalSub: "คัดลอกไฟล์ด้านล่างไปวางในโฟลเดอร์โปรเจกต์ แล้วรันคำสั่ง docker-compose up -d --build",
+        copyCode: "คัดลอกโค้ด",
+        toastCopied: "คัดลอกโค้ด Docker ลงคลิปบอร์ดแล้ว"
+      },
+      en: {
+        brandName: "Sawang Tech Car Wash",
+        navHome: "Home",
+        navServices: "Services",
+        navPromo: "Promotions",
+        navBooking: "Book Now",
+        navCheck: "Check Queue",
+        navContact: "Contact",
+        navLogin: "Admin Login",
+        navAdminPanel: "Admin Panel",
+        heroTagline: "“Caring for your car... to a superior shine”",
+        heroTitle: "Sawang Tech Car Wash",
+        heroSubtitle: "Premium car wash service. Easy online booking, zero long waits.",
+        heroCta: "Book Car Wash Now",
+        heroPerk1: "Fast Service",
+        heroPerk2: "Transparent Pricing",
+        heroPerk3: "Care with Heart",
+        badgeTitle: "Clean & Shiny",
+        badgeSub: "On Every Journey",
+        servicesHeading: "Our Services",
+        currency: "THB",
+        bookNow: "Book Now",
+        promoRibbon: "Special Promo!",
+        promoTitle: "Car Wash + Vacuum",
+        promoOnly: "Only",
+        promoDesc: "“Complete clean & best value at Sawang Tech Car Wash”",
+        feat1: "Quality Standard",
+        feat2: "Fast & Prompt",
+        feat3: "Fair Pricing",
+        feat4: "Service with a Smile",
+        whyPrefix: "Why Choose",
+        whyDesc: "We use premium-grade car wash and wax formulas safe for all paint types, paired with a real-time online queue system so you never waste time waiting.",
+        contactLocTitle: "Service Location",
+        contactLocVal: "Sawang Tech Car Care Center",
+        contactPhoneTitle: "Hotline",
+        contactTimeTitle: "Opening Hours",
+        contactTimeVal: "Daily 08:00 AM - 07:00 PM",
+        checkHeading: "Check Car Wash Queue Status",
+        checkSub: "Enter your Queue Code (e.g. SW-1001), phone number, or license plate",
+        backHome: "Back to Home",
+        searchPlaceholder: "Enter Queue Code / Phone / License Plate...",
+        searchBtn: "Search",
+        recentQueuesLabel: "Recent queues in system (type to filter your vehicle):",
+        showAll: "Show All",
+        noQueueFound: "No matching queue found. Please verify your queue code or phone number.",
+        modalBookTitle: "Online Car Wash Booking",
+        modalBookSub: "Fill in the details below to get your queue code instantly",
+        labelSelectService: "Select Service Package *",
+        labelName: "Customer Name *",
+        phName: "e.g. John Doe",
+        labelPhone: "Phone Number *",
+        labelPlate: "License Plate *",
+        phPlate: "e.g. AB 1234 BKK",
+        labelCarModel: "Car Brand / Model",
+        phModel: "e.g. White Honda Civic",
+        labelDate: "Service Date *",
+        labelTime: "Time Slot *",
+        cancelBtn: "Cancel",
+        confirmBookBtn: "Confirm Booking",
+        loginTitle: "Admin System Login",
+        loginSub: "For Sawang Tech Car Wash Administrators",
+        usernameLabel: "Username",
+        passwordLabel: "Password",
+        quickLoginBtn: "Quick Demo Login",
+        loginSubmitBtn: "Sign In",
+        adminTitle: "Admin Management Dashboard",
+        adminSub: "Manage customer queues, update wash status, edit services & export Docker files",
+        dockerBtn: "Docker Setup Files",
+        viewFrontend: "Customer View",
+        logoutBtn: "Logout",
+        statTotal: "Total Queues",
+        statWaiting: "Waiting",
+        statWashing: "Washing Now",
+        statRevenue: "Total Revenue (THB)",
+        adminQueueTableTitle: "All Customer Bookings",
+        adminAddBooking: "Add Walk-in Queue",
+        thCode: "Queue ID",
+        thDateTime: "Date / Time",
+        thCustomer: "Customer / Phone",
+        thCar: "Plate / Model",
+        thService: "Service / Price",
+        thStatus: "Status",
+        thAction: "Actions",
+        adminServiceTitle: "Manage Service Packages (Add / Remove)",
+        priceLabel: "Price (THB) *",
+        addServiceBtn: "Add Service",
+        statusWaiting: "Waiting",
+        statusWashing: "Washing",
+        statusDone: "Completed",
+        statusCancel: "Cancelled",
+        toastBookedTitle: "Booking Confirmed!",
+        toastBookedMsg: "Your queue code is",
+        toastLoginOk: "Logged in as Admin",
+        toastLoginFail: "Invalid username or password",
+        toastStatusUpdated: "Queue status updated",
+        toastDeleted: "Record deleted",
+        toastServiceAdded: "New service package added",
+        dockerModalTitle: "Docker Deployment Files for Server / localhost:8080",
+        dockerModalSub: "Copy the configuration below and run: docker-compose up -d --build",
+        copyCode: "Copy Code",
+        toastCopied: "Docker code copied to clipboard"
+      },
+      zh: {
+        brandName: "沙旺技术智能洗车",
+        navHome: "首页",
+        navServices: "洗车服务",
+        navPromo: "特惠活动",
+        navBooking: "在线预约",
+        navCheck: "查询排队",
+        navContact: "联系我们",
+        navLogin: "管理员登录",
+        navAdminPanel: "管理后台",
+        heroTagline: "“呵护您的爱车……洁净超越非凡”",
+        heroTitle: "沙旺技术智能洗车",
+        heroSubtitle: "高品质专业洗车服务，在线轻松预约，无需长时间等待",
+        heroCta: "立即预约洗车",
+        heroPerk1: "服务快捷",
+        heroPerk2: "价格透明",
+        heroPerk3: "用心呵护",
+        badgeTitle: "洁净闪亮",
+        badgeSub: "伴您每一段旅程",
+        servicesHeading: "我们的服务",
+        currency: "泰铢",
+        bookNow: "立即预约",
+        promoRibbon: "限时特惠！",
+        promoTitle: "精洗外观 + 车内吸尘",
+        promoOnly: "仅需",
+        promoDesc: "“全面洁净，超值之选，尽在沙旺技术洗车”",
+        feat1: "品质标准",
+        feat2: "快捷高效",
+        feat3: "价格公道",
+        feat4: "微笑服务",
+        whyPrefix: "为什么选择",
+        whyDesc: "我们精选优质环保洗车液与车漆护理产品，安全不伤车漆，配备实时在线排队系统，让您省时省心。",
+        contactLocTitle: "服务地址",
+        contactLocVal: "沙旺技术汽车护理中心",
+        contactPhoneTitle: "服务热线",
+        contactTimeTitle: "营业时间",
+        contactTimeVal: "每天 08:00 - 19:00",
+        checkHeading: "查询洗车排队状态",
+        checkSub: "请输入排队号（例如 SW-1001）、手机号码或车牌号",
+        backHome: "返回首页",
+        searchPlaceholder: "输入排队号 / 手机号 / 车牌号...",
+        searchBtn: "立即查询",
+        recentQueuesLabel: "系统最新排队列表（输入关键词筛选您的车辆）：",
+        showAll: "显示全部",
+        noQueueFound: "未找到匹配的预约记录，请核对排队号或手机号码。",
+        modalBookTitle: "在线预约洗车",
+        modalBookSub: "填写以下信息，立即获取专属排队号码",
+        labelSelectService: "选择洗车套餐 *",
+        labelName: "联系人姓名 *",
+        phName: "例如：王先生",
+        labelPhone: "联系电话 *",
+        labelPlate: "车牌号码 *",
+        phPlate: "例如：京A 88888",
+        labelCarModel: "汽车品牌 / 型号",
+        phModel: "例如：白色本田思域",
+        labelDate: "预约日期 *",
+        labelTime: "预约时间段 *",
+        cancelBtn: "取消",
+        confirmBookBtn: "确认预约",
+        loginTitle: "管理员系统登录",
+        loginSub: "仅限沙旺技术洗车管理人员使用",
+        usernameLabel: "用户名 (Username)",
+        passwordLabel: "密码 (Password)",
+        quickLoginBtn: "一键体验登录",
+        loginSubmitBtn: "登录系统",
+        adminTitle: "后台管理系统 (Admin Dashboard)",
+        adminSub: "管理客户排队、更新洗车进度、编辑服务套餐及导出 Docker 部署文件",
+        dockerBtn: "Docker 部署文件",
+        viewFrontend: "查看客户端页面",
+        logoutBtn: "退出登录",
+        statTotal: "总预约数",
+        statWaiting: "排队等待中",
+        statWashing: "正在洗车",
+        statRevenue: "预计总营收 (泰铢)",
+        adminQueueTableTitle: "全部客户预约列表",
+        adminAddBooking: "新增到店排队",
+        thCode: "排队号",
+        thDateTime: "日期 / 时间",
+        thCustomer: "客户 / 电话",
+        thCar: "车牌 / 车型",
+        thService: "服务项目 / 价格",
+        thStatus: "当前状态",
+        thAction: "操作",
+        adminServiceTitle: "管理服务套餐（新增 / 删除）",
+        priceLabel: "价格 (泰铢) *",
+        addServiceBtn: "添加套餐",
+        statusWaiting: "排队中",
+        statusWashing: "洗车中",
+        statusDone: "已完成",
+        statusCancel: "已取消",
+        toastBookedTitle: "预约成功！",
+        toastBookedMsg: "您的排队号码为",
+        toastLoginOk: "管理员登录成功",
+        toastLoginFail: "用户名或密码错误",
+        toastStatusUpdated: "排队状态已更新",
+        toastDeleted: "记录已删除",
+        toastServiceAdded: "已添加新服务套餐",
+        dockerModalTitle: "Docker 部署配置文件 (localhost:8080)",
+        dockerModalSub: "复制下方配置到项目目录，运行 docker-compose up -d --build 即可启动",
+        copyCode: "复制代码",
+        toastCopied: "Docker 配置代码已复制到剪贴板"
+      }
+    };
+
+    // 2. ข้อมูลเริ่มต้น (Services & Mock Bookings) บันทึกใน LocalStorage
+    const defaultServices = [
+      {
+        id: 1,
+        name: { th: "ล้างรถภายนอก", en: "Exterior Wash", zh: "外观精洗" },
+        price: 80,
+        image: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 2,
+        name: { th: "ล้างรถ + ดูดฝุ่น", en: "Wash + Vacuum", zh: "洗车 + 吸尘" },
+        price: 150,
+        image: "https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 3,
+        name: { th: "ล้างรถ Premium", en: "Premium Wash", zh: "尊享精洗" },
+        price: 250,
+        image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 4,
+        name: { th: "เคลือบสีรถ", en: "Wax & Polish", zh: "车漆打蜡" },
+        price: 500,
+        image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    const defaultBookings = [
+      {
+        id: 101,
+        code: "SW-1001",
+        customerName: "คุณธนากร ใจดี",
+        phone: "081-234-5678",
+        plate: "กท 8899 กทม",
+        model: "BMW 530e สีน้ำเงิน",
+        serviceId: 3,
+        date: todayStr,
+        time: "10:30",
+        status: "washing"
+      },
+      {
+        id: 102,
+        code: "SW-1002",
+        customerName: "คุณวิภาดา สว่างจิต",
+        phone: "089-555-4321",
+        plate: "ขข 4512 ชม",
+        model: "Toyota Camry สีขาว",
+        serviceId: 2,
+        date: todayStr,
+        time: "11:30",
+        status: "waiting"
+      },
+      {
+        id: 103,
+        code: "SW-1003",
+        customerName: "Mr. Alex Chen",
+        phone: "092-777-8899",
+        plate: "ฌฮ 999 กทม",
+        model: "Tesla Model 3",
+        serviceId: 4,
+        date: todayStr,
+        time: "09:30",
+        status: "done"
+      }
+    ];
+
+    // State Management
+    let currentLang = localStorage.getItem('sawang_lang') || 'th';
+    let services = JSON.parse(localStorage.getItem('sawang_services')) || defaultServices;
+    let bookings = JSON.parse(localStorage.getItem('sawang_bookings')) || defaultBookings;
+    let isAdminLoggedIn = localStorage.getItem('sawang_admin') === 'true';
+
+    function saveState() {
+      localStorage.setItem('sawang_services', JSON.stringify(services));
+      localStorage.setItem('sawang_bookings', JSON.stringify(bookings));
+    }
+
+    // 3. ระบบเปลี่ยนภาษา 3 ภาษา (TH / EN / ZH)
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('sawang_lang', lang);
+      document.documentElement.lang = lang;
+
+      // อัปเดตปุ่มเลือกภาษาบน Navbar
+      ['th', 'en', 'zh'].forEach(l => {
+        const btn = document.getElementById(`lang-${l}`);
+        if (l === lang) {
+          btn.className = "lang-btn px-2.5 py-1 rounded-full cyber-btn text-white font-extrabold";
+        } else {
+          btn.className = "lang-btn px-2.5 py-1 rounded-full text-slate-300 hover:text-white transition";
+        }
+      });
+
+      // แปลข้อความ data-i18n ทั้งหมด
+      const dict = i18n[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      // แปล Placeholder
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) el.placeholder = dict[key];
+      });
+
+      updateAdminHeaderBtn();
+      renderServices();
+      renderBookingServiceOptions();
+      renderQueueCheck();
+      if (isAdminLoggedIn) renderAdminDashboard();
+    }
+
+    // 4. การสลับหน้าจอ (Home / Check Queue / Admin)
+    function switchView(viewName) {
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-check').classList.add('hidden');
+      document.getElementById('view-admin').classList.add('hidden');
+
+      if (viewName === 'admin' && !isAdminLoggedIn) {
+        openLoginModal();
+        document.getElementById('view-home').classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById(`view-${viewName}`).classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (viewName === 'check') renderQueueCheck();
+      if (viewName === 'admin') renderAdminDashboard();
+    }
+
+    // 5. Render การ์ดบริการของเรา (4 การ์ดเรืองแสงตามภาพต้นฉบับ)
+    function renderServices() {
+      const grid = document.getElementById('servicesGrid');
+      const dict = i18n[currentLang];
+
+      grid.innerHTML = services.map(srv => {
+        const srvTitle = srv.name[currentLang] || srv.name.th;
+        return `
+          <div class="cyber-card rounded-2xl p-3.5 flex items-center gap-3.5 group">
+            <div class="w-24 h-24 sm:w-28 sm:h-24 rounded-xl overflow-hidden border border-sky-400/40 shrink-0 relative">
+              <img src="${srv.image}" alt="${srvTitle}" onerror="this.src='https://placehold.co/300x200/06204a/38bdf8?text=Car+Wash'" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm sm:text-base truncate" title="${srvTitle}">${srvTitle}</h3>
+              <div class="flex items-baseline gap-1.5 my-1">
+                <span class="text-2xl sm:text-3xl font-black text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]">${srv.price}</span>
+                <span class="text-xs sm:text-sm font-bold text-sky-200">${dict.currency}</span>
+              </div>
+              <button onclick="openBookingModal(${srv.id})" class="cyber-btn px-4 py-1.5 rounded-full text-xs font-bold text-white inline-flex items-center gap-1.5 mt-0.5">
+                <span>${dict.bookNow}</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 6. ระบบจองคิว (Modal)
+    function renderBookingServiceOptions(selectedId = null) {
+      const select = document.getElementById('bookServiceSelect');
+      const dict = i18n[currentLang];
+      select.innerHTML = services.map(srv => {
+        const title = srv.name[currentLang] || srv.name.th;
+        const isSel = selectedId && Number(selectedId) === srv.id ? 'selected' : '';
+        return `<option value="${srv.id}" ${isSel}>${title} — ${srv.price} ${dict.currency}</option>`;
+      }).join('');
+    }
+
+    function openBookingModal(serviceId = null) {
+      renderBookingServiceOptions(serviceId);
+      document.getElementById('bookDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('bookingModal').classList.remove('hidden');
+    }
+
+    function closeBookingModal() {
+      document.getElementById('bookingModal').classList.add('hidden');
+    }
+
+    function submitBookingForm(e) {
+      e.preventDefault();
+      const dict = i18n[currentLang];
+      const serviceId = Number(document.getElementById('bookServiceSelect').value);
+      const customerName = document.getElementById('bookName').value.trim();
+      const phone = document.getElementById('bookPhone').value.trim();
+      const plate = document.getElementById('bookPlate').value.trim();
+      const model = document.getElementById('bookModel').value.trim() || '-';
+      const date = document.getElementById('bookDate').value;
+      const time = document.getElementById('bookTime').value;
+
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const code = `SW-${randomNum}`;
+
+      const newBooking = {
+        id: Date.now(),
+        code,
+        customerName,
+        phone,
+        plate,
+        model,
+        serviceId,
+        date,
+        time,
+        status: 'waiting'
+      };
+
+      bookings.unshift(newBooking);
+      saveState();
+
+      closeBookingModal();
+      e.target.reset();
+
+      showToast(dict.toastBookedTitle, `${dict.toastBookedMsg} ${code}`);
+      
+      if (isAdminLoggedIn && !document.getElementById('view-admin').classList.contains('hidden')) {
+        renderAdminDashboard();
+      } else {
+        document.getElementById('queueSearchInput').value = code;
+        switchView('check');
+      }
+    }
+
+    // 7. ระบบตรวจสอบสถานะคิว
+    function getStatusBadge(status) {
+      const dict = i18n[currentLang];
+      const map = {
+        waiting: { label: dict.statusWaiting, cls: "bg-amber-500/20 text-amber-300 border-amber-400/40", icon: "fa-clock" },
+        washing: { label: dict.statusWashing, cls: "bg-sky-500/25 text-sky-300 border-sky-400/60 animate-pulse", icon: "fa-soap" },
+        done: { label: dict.statusDone, cls: "bg-emerald-500/20 text-emerald-300 border-emerald-400/40", icon: "fa-circle-check" },
+        cancel: { label: dict.statusCancel, cls: "bg-red-500/20 text-red-300 border-red-400/40", icon: "fa-ban" }
+      };
+      const item = map[status] || map.waiting;
+      return `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${item.cls}">
+        <i class="fa-solid ${item.icon}"></i> ${item.label}
+      </span>`;
+    }
+
+    function renderQueueCheck() {
+      const query = (document.getElementById('queueSearchInput').value || '').trim().toLowerCase();
+      const container = document.getElementById('queueCheckResults');
+      const dict = i18n[currentLang];
+
+      const filtered = query
+        ? bookings.filter(b =>
+            b.code.toLowerCase().includes(query) ||
+            b.phone.toLowerCase().includes(query) ||
+            b.plate.toLowerCase().includes(query) ||
+            b.customerName.toLowerCase().includes(query)
+          )
+        : bookings;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-slate-400 bg-[#030d1f]/60 rounded-2xl border border-slate-800">
+            <i class="fa-regular fa-face-frown text-3xl mb-2 text-sky-400"></i>
+            <p class="text-sm">${dict.noQueueFound}</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(b => {
+        const srv = services.find(s => s.id === b.serviceId);
+        const srvName = srv ? (srv.name[currentLang] || srv.name.th) : '-';
+        const price = srv ? srv.price : 0;
+
+        return `
+          <div class="bg-[#041229]/90 border border-sky-500/35 rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 hover:border-sky-400 transition">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2.5">
+                <span class="px-3 py-0.5 rounded-lg bg-sky-500/20 border border-sky-400/40 text-sky-300 font-black text-sm">${b.code}</span>
+                <span class="font-bold text-white text-base">${b.plate}</span>
+                <span class="text-xs text-slate-400">(${b.model})</span>
+              </div>
+              <div class="text-sm text-sky-200 font-medium">
+                <i class="fa-solid fa-car-wash mr-1 text-sky-400"></i> ${srvName} — <span class="font-bold text-white">${price} ${dict.currency}</span>
+              </div>
+              <div class="text-xs text-slate-400">
+                <i class="fa-regular fa-user mr-1"></i> ${b.customerName} | <i class="fa-regular fa-calendar mr-1"></i> ${b.date} (${b.time})
+              </div>
+            </div>
+            <div>
+              ${getStatusBadge(b.status)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 8. ระบบแอดมิน (Login / Dashboard / Update / Delete)
+    function updateAdminHeaderBtn() {
+      const btnText = document.getElementById('adminHeaderText');
+      const dict = i18n[currentLang];
+      btnText.textContent = isAdminLoggedIn ? dict.navAdminPanel : dict.navLogin;
+    }
+
+    function handleAdminButton() {
+      if (isAdminLoggedIn) {
+        switchView('admin');
+      } else {
+        openLoginModal();
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    function submitAdminLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('adminUser').value.trim();
+      const p = document.getElementById('adminPass').value.trim();
+      const dict = i18n[currentLang];
+
+      if (u === 'admin' && p === '1234') {
+        isAdminLoggedIn = true;
+        localStorage.setItem('sawang_admin', 'true');
+        closeLoginModal();
+        updateAdminHeaderBtn();
+        showToast(dict.toastLoginOk, 'Sawang Tech Admin Dashboard');
+        switchView('admin');
+      } else {
+        showToast(dict.toastLoginFail, 'User: admin / Pass: 1234', true);
+      }
+    }
+
+    function quickDemoLogin() {
+      document.getElementById('adminUser').value = 'admin';
+      document.getElementById('adminPass').value = '1234';
+      isAdminLoggedIn = true;
+      localStorage.setItem('sawang_admin', 'true');
+      closeLoginModal();
+      updateAdminHeaderBtn();
+      showToast(i18n[currentLang].toastLoginOk, 'Demo Mode Activated');
+      switchView('admin');
+    }
+
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      localStorage.removeItem('sawang_admin');
+      updateAdminHeaderBtn();
+      switchView('home');
+    }
+
+    function renderAdminDashboard() {
+      const dict = i18n[currentLang];
+
+      // คำนวณสถิติ
+      const total = bookings.length;
+      const waiting = bookings.filter(b => b.status === 'waiting').length;
+      const washing = bookings.filter(b => b.status === 'washing').length;
+      const revenue = bookings
+        .filter(b => b.status !== 'cancel')
+        .reduce((sum, b) => {
+          const srv = services.find(s => s.id === b.serviceId);
+          return sum + (srv ? Number(srv.price) : 0);
+        }, 0);
+
+      document.getElementById('adminStatsGrid').innerHTML = `
+        <div class="cyber-card p-4 rounded-2xl border-sky-400/40">
+          <div class="text-xs text-sky-300 font-semibold">${dict.statTotal}</div>
+          <div class="text-3xl font-black text-white mt-1">${total}</div>
+        </div>
+        <div class="cyber-card p-4 rounded-2xl border-amber-400/40">
+          <div class="text-xs text-amber-300 font-semibold">${dict.statWaiting}</div>
+          <div class="text-3xl font-black text-amber-400 mt-1">${waiting}</div>
+        </div>
+        <div class="cyber-card p-4 rounded-2xl border-sky-400/60">
+          <div class="text-xs text-sky-300 font-semibold">${dict.statWashing}</div>
+          <div class="text-3xl font-black text-sky-400 mt-1">${washing}</div>
+        </div>
+        <div class="cyber-card p-4 rounded-2xl border-emerald-400/40">
+          <div class="text-xs text-emerald-300 font-semibold">${dict.statRevenue}</div>
+          <div class="text-3xl font-black text-emerald-400 mt-1">${revenue.toLocaleString()}</div>
+        </div>
+      `;
+
+      // Render ตารางคิว
+      const tbody = document.getElementById('adminBookingsBody');
+      tbody.innerHTML = bookings.map(b => {
+        const srv = services.find(s => s.id === b.serviceId);
+        const srvName = srv ? (srv.name[currentLang] || srv.name.th) : '-';
+        const price = srv ? srv.price : 0;
+
+        return `
+          <tr class="hover:bg-sky-500/5 transition">
+            <td class="py-3.5 px-3 font-black text-sky-400">${b.code}</td>
+            <td class="py-3.5 px-3 text-xs">
+              <div class="text-white font-semibold">${b.date}</div>
+              <div class="text-slate-400">${b.time}</div>
+            </td>
+            <td class="py-3.5 px-3">
+              <div class="font-bold text-white">${b.customerName}</div>
+              <div class="text-xs text-sky-300">${b.phone}</div>
+            </td>
+            <td class="py-3.5 px-3">
+              <div class="font-bold text-white">${b.plate}</div>
+              <div class="text-xs text-slate-400">${b.model}</div>
+            </td>
+            <td class="py-3.5 px-3">
+              <div class="text-white font-medium">${srvName}</div>
+              <div class="text-xs text-emerald-400 font-bold">${price} ${dict.currency}</div>
+            </td>
+            <td class="py-3.5 px-3">
+              <select onchange="changeBookingStatus(${b.id}, this.value)" class="px-2.5 py-1.5 rounded-xl bg-[#030d1f] border border-sky-500/40 text-xs font-bold text-white focus:outline-none">
+                <option value="waiting" ${b.status === 'waiting' ? 'selected' : ''}>🕒 ${dict.statusWaiting}</option>
+                <option value="washing" ${b.status === 'washing' ? 'selected' : ''}>🫧 ${dict.statusWashing}</option>
+                <option value="done" ${b.status === 'done' ? 'selected' : ''}>✅ ${dict.statusDone}</option>
+                <option value="cancel" ${b.status === 'cancel' ? 'selected' : ''}>❌ ${dict.statusCancel}</option>
+              </select>
+            </td>
+            <td class="py-3.5 px-3 text-right">
+              <button onclick="deleteBooking(${b.id})" class="p-2 rounded-lg bg-red-500/15 hover:bg-red-600 text-red-400 hover:text-white transition" title="Delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Render รายการบริการในหน้าแอดมิน
+      const srvList = document.getElementById('adminServicesList');
+      srvList.innerHTML = services.map(srv => `
+        <div class="bg-[#041229] border border-sky-500/30 rounded-xl p-3 flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <div class="font-bold text-sm text-white truncate">${srv.name[currentLang] || srv.name.th}</div>
+            <div class="text-xs text-sky-400 font-bold">${srv.price} ${dict.currency}</div>
+          </div>
+          ${services.length > 1 ? `
+            <button onclick="deleteService(${srv.id})" class="p-2 rounded-lg bg-red-500/15 hover:bg-red-600 text-red-400 hover:text-white text-xs">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    function changeBookingStatus(id, newStatus) {
+      const idx = bookings.findIndex(b => b.id === id);
+      if (idx !== -1) {
+        bookings[idx].status = newStatus;
+        saveState();
+        renderAdminDashboard();
+        showToast(i18n[currentLang].toastStatusUpdated, bookings[idx].code);
+      }
+    }
+
+    function deleteBooking(id) {
+      bookings = bookings.filter(b => b.id !== id);
+      saveState();
+      renderAdminDashboard();
+      showToast(i18n[currentLang].toastDeleted, '');
+    }
+
+    function handleAddService(e) {
+      e.preventDefault();
+      const th = document.getElementById('newSrvTh').value.trim();
+      const en = document.getElementById('newSrvEn').value.trim();
+      const zh = document.getElementById('newSrvZh').value.trim();
+      const price = Number(document.getElementById('newSrvPrice').value);
+
+      services.push({
+        id: Date.now(),
+        name: { th, en, zh },
+        price,
+        image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=600&q=80"
+      });
+
+      saveState();
+      e.target.reset();
+      renderServices();
+      renderAdminDashboard();
+      showToast(i18n[currentLang].toastServiceAdded, `${th} (${price})`);
+    }
+
+    function deleteService(id) {
+      services = services.filter(s => s.id !== id);
+      saveState();
+      renderServices();
+      renderAdminDashboard();
+      showToast(i18n[currentLang].toastDeleted, '');
+    }
+
+    // 9. Docker Modal & Clipboard
+    function openDockerModal() {
+      document.getElementById('dockerModal').classList.remove('hidden');
+    }
+    function closeDockerModal() {
+      document.getElementById('dockerModal').classList.add('hidden');
+    }
+    function copyDockerSnippet() {
+      const box = document.getElementById('dockerCodeBox');
+      box.select();
+      document.execCommand('copy');
+      showToast(i18n[currentLang].toastCopied, 'Dockerfile & docker-compose.yml');
+    }
+
+    // 10. UI Helpers (Mobile Menu & Toast)
+    function toggleMobileMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    let toastTimer;
+    function showToast(title, msg, isError = false) {
+      const box = document.getElementById('toastBox');
+      const icon = document.getElementById('toastIcon');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMsg').textContent = msg;
+
+      if (isError) {
+        icon.className = "w-10 h-10 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-lg shrink-0";
+        icon.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+      } else {
+        icon.className = "w-10 h-10 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg shrink-0";
+        icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+      }
+
+      box.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(hideToast, 4000);
+    }
+
+    function hideToast() {
+      document.getElementById('toastBox').classList.add('hidden');
+    }
+
+    // เริ่มต้นทำงานเมื่อโหลดหน้าเว็บ
+    window.addEventListener('DOMContentLoaded', () => {
+      setLanguage(currentLang);
+    });
+  </script>
+</body>
+</html>
